@@ -2,8 +2,7 @@
 
 # Usage: ./distserve_eval.sh --model {MODEL} --gpu-memory-util {GPU_UTIL} --dataset {DATASET}
 
-
-PORT=8000
+PORT=8090
 BASE_TTFT=0.25
 BASE_TPOT=0.1
 CONTEXT_TP=1
@@ -79,24 +78,9 @@ cleanup() {
 
 trap cleanup EXIT
 
-check_server_health() {
-    curl -s "http://localhost:$PORT" > /dev/null
-    return $?
-}
+echo"Waiting for server to start... sleep for 30 seconds"
+sleep 30
 
-echo "Waiting for the server to initialize..."
-for i in {1..30}; do
-    if check_server_health; then
-        echo "Server is healthy!"
-        break
-    fi
-    sleep 1
-done
-
-if ! check_server_health; then
-    echo "Error: Server did not become healthy after 30 seconds. Exiting."
-    exit 1
-fi
 
 echo "Server is up. Running benchmark with dataset: $DATASET"
-python ./benchmark-serving.py --dataset "$DATASET" --verbose true --base-ttft $BASE_TTFT --base-tpot $BASE_TPOT
+python ./benchmark-serving.py --dataset "$DATASET" --verbose --port $PORT --base-ttft $BASE_TTFT --base-tpot $BASE_TPOT
