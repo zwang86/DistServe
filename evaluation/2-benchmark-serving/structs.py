@@ -53,6 +53,7 @@ class RequestResult:
         output_len: int,
         start_time: float,
         end_time: float,
+        slo_ratio: float,
         token_timestamps: List[float],
         lifetime_events: List[LifetimeEvent] = None
     ):
@@ -60,6 +61,7 @@ class RequestResult:
         self.output_len = output_len
         self.start_time = start_time
         self.end_time = end_time
+        self.slo_ratio = slo_ratio
         self.token_timestamps = token_timestamps
         self.lifecycle_events = lifetime_events
         
